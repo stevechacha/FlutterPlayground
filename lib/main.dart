@@ -1,39 +1,47 @@
 import 'package:flutter/material.dart';
+import 'package:hubar/search.dart';
+import 'package:hubar/settings.dart';
+
+import 'accounts.dart';
+import 'home.dart';
 
 void main() {
   runApp(const MyApp());
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   const MyApp({Key? key}) : super(key: key);
 
-  get child => null;
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  int _selectedIndex = 0;
+
+  static const List<Widget> _screens = <Widget>[
+    HomeScreen(),
+    SettingsScreen(),
+    SearchScreen(),
+    AccountScreen(),
+  ];
+
+  void _onItemTapped(int index) {
+    setState(() {
+      _selectedIndex = index;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       home: Scaffold(
-        appBar: AppBar(
-          title: const Text('Home'),
+        body: _screens[_selectedIndex],
+        floatingActionButton: FloatingActionButton(
+          onPressed: () {},
+          child: const Text('Add'),
         ),
-        body: Center(
-          child: SizedBox(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: const [
-                Text(
-                  'Homes',
-                  textAlign: TextAlign.center,
-                  maxLines: 1,
-                ),
-              ],
-            ),
-            
-          ),
-        ),
-        floatingActionButton: FloatingActionButton(onPressed: () {  },child: const Text('Add'),),
         bottomNavigationBar: BottomNavigationBar(
           items: const [
             BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
@@ -41,6 +49,11 @@ class MyApp extends StatelessWidget {
             BottomNavigationBarItem(icon: Icon(Icons.search), label: 'Search'),
             BottomNavigationBarItem(icon: Icon(Icons.account_balance), label: 'Account')
           ],
+          currentIndex: _selectedIndex,
+          selectedItemColor: Colors.blue,
+          onTap: _onItemTapped,
+          unselectedItemColor: Colors.grey,
+          showUnselectedLabels: true,
         ),
       ),
     );
